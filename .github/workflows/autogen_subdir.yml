@@ -1,13 +1,15 @@
-name: Autogen README (test)
+name: Autogen README (subdir test)
 
 on:
   push:
     branches: [ main ]
     paths:
-      - readme.toml
-      - .github/workflows/autogen_readme.yml
+      - subdir/readme.toml
+      - subdir/README.md
+      - .github/workflows/autogen_subdir.yml
       - .github/workflows/reusable_toml_autogen.yml
       - scripts/readme_warning.py
+      - scripts/convert_toml_to_readme.py
   workflow_dispatch: {}
 
 permissions:
@@ -18,5 +20,5 @@ jobs:
     if: github.actor != 'github-actions[bot]'
     uses: ./.github/workflows/reusable_toml_autogen.yml
     with:
-      toml_path: readme.toml
-      readme_path: README.md
+      toml_path: subdir/readme.toml
+      readme_path: subdir/README.md

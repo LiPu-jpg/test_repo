@@ -1,0 +1,16 @@
+course_name = "子目录测试课程"
+repo_type = "normal"
+course_code = "TEST0001"
+
+description = """
+这是一个用于测试 toml_path/readme_path 指向子目录文件的用例。
+"""
+
+[[lecturers]]
+name = "Subdir 教师"
+
+  [[lecturers.reviews]]
+  content = """
+  子目录评价。
+  """
+  author = { name = "LiPu", link = "https://github.com/LiPu-jpg", date = "2026-02" }

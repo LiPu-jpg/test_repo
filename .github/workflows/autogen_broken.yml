@@ -1,0 +1,14 @@
+name: Autogen README (failure test)
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  autogen:
+    uses: ./.github/workflows/reusable_toml_autogen.yml
+    with:
+      toml_path: broken/readme.toml
+      readme_path: broken/README.md
