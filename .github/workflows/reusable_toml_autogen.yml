@@ -62,7 +62,6 @@ jobs:
 
       - name: Clear warning (success only)
         if: >-
-          github.event_name == 'push' &&
           github.ref == 'refs/heads/main' &&
           steps.fmt.outcome == 'success' &&
           steps.gen.outcome == 'success'
@@ -73,7 +72,6 @@ jobs:
       - name: Add warning (failure)
         if: >-
           always() &&
-          github.event_name == 'push' &&
           github.ref == 'refs/heads/main' &&
           (steps.fmt.outcome != 'success' || steps.gen.outcome != 'success')
         run: |
@@ -82,7 +80,7 @@ jobs:
           python3 scripts/readme_warning.py --readme "${{ inputs.readme_path }}" --set --message "$msg"
 
       - name: Commit & push changes (main only)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main'
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
