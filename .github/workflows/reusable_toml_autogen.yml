@@ -42,15 +42,17 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Format TOML (taplo)
+      - name: Set up Taplo CLI
+        uses: uncenter/setup-taplo@v1
+        with:
+          version: "0.10.0"
+
+      - name: Format TOML (taplo fmt)
         id: fmt
         continue-on-error: true
-        uses: tamasfe/taplo@0.10.0
-        with:
-          args: >-
-            fmt
-            ${{ inputs.toml_path }}
-            ${{ inputs.taplo_args }}
+        run: |
+          set -euo pipefail
+          taplo fmt "${{ inputs.toml_path }}" ${{ inputs.taplo_args }}
 
       - name: Generate README from TOML
         id: gen
