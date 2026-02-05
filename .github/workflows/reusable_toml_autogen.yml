@@ -45,7 +45,7 @@ jobs:
       - name: Format TOML (taplo)
         id: fmt
         continue-on-error: true
-        uses: tamasfe/taplo@v1
+        uses: tamasfe/taplo@0.10.0
         with:
           args: >-
             fmt
