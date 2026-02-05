@@ -9,8 +9,8 @@ description = """
 [[lecturers]]
 name = "Subdir 教师"
 
-  [[lecturers.reviews]]
-  content = """
+[[lecturers.reviews]]
+content = """
   子目录评价。
   """
-  author = { name = "LiPu", link = "https://github.com/LiPu-jpg", date = "2026-02" }
+author = { name = "LiPu", link = "https://github.com/LiPu-jpg", date = "2026-02" }
