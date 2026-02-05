@@ -1,0 +1,21 @@
+name: Autogen README (test)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - readme.toml
+      - .github/workflows/autogen_readme.yml
+      - .github/workflows/reusable_toml_autogen.yml
+      - scripts/readme_warning.py
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  autogen:
+    uses: ./.github/workflows/reusable_toml_autogen.yml
+    with:
+      toml_path: readme.toml
+      readme_path: README.md

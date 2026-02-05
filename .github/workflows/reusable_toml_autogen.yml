@@ -1,0 +1,106 @@
+name: Reusable TOML Autogen (format + generate README)
+
+on:
+  workflow_call:
+    inputs:
+      toml_path:
+        description: Path to readme TOML file
+        required: false
+        default: readme.toml
+        type: string
+      readme_path:
+        description: Path to README.md
+        required: false
+        default: README.md
+        type: string
+      generator_url:
+        description: Raw URL to convert_toml_to_readme.py
+        required: false
+        default: https://raw.githubusercontent.com/HITSZ-OpenAuto/RDME/main/tools/convert_toml_to_readme.py
+        type: string
+      taplo_args:
+        description: taplo fmt args (without leading 'fmt')
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  autogen:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Format TOML (taplo)
+        id: fmt
+        continue-on-error: true
+        uses: tamasfe/taplo@v1
+        with:
+          args: >-
+            fmt
+            ${{ inputs.toml_path }}
+            ${{ inputs.taplo_args }}
+
+      - name: Generate README from TOML
+        id: gen
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          curl -sSLf -o /tmp/convert_toml_to_readme.py "${{ inputs.generator_url }}"
+          python3 /tmp/convert_toml_to_readme.py --input "${{ inputs.toml_path }}" --overwrite
+
+      - name: Clear warning (success only)
+        if: >-
+          github.event_name == 'push' &&
+          github.ref == 'refs/heads/main' &&
+          steps.fmt.outcome == 'success' &&
+          steps.gen.outcome == 'success'
+        run: |
+          set -euo pipefail
+          python3 scripts/readme_warning.py --readme "${{ inputs.readme_path }}" --clear
+
+      - name: Add warning (failure)
+        if: >-
+          always() &&
+          github.event_name == 'push' &&
+          github.ref == 'refs/heads/main' &&
+          (steps.fmt.outcome != 'success' || steps.gen.outcome != 'success')
+        run: |
+          set -euo pipefail
+          msg="TOML 自动化格式化/生成 README 失败：请检查 ${{ inputs.toml_path }}（并查看 Actions 日志）。"
+          python3 scripts/readme_warning.py --readme "${{ inputs.readme_path }}" --set --message "$msg"
+
+      - name: Commit & push changes (main only)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add "${{ inputs.toml_path }}" "${{ inputs.readme_path }}" || true
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "ci: format toml & regenerate README [automated]"
+          git push origin HEAD:main
+
+      - name: Fail CI if formatting/generation failed
+        if: steps.fmt.outcome != 'success' || steps.gen.outcome != 'success'
+        run: |
+          echo "Formatting outcome: ${{ steps.fmt.outcome }}"
+          echo "Generation outcome: ${{ steps.gen.outcome }}"
+          exit 1

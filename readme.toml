@@ -1,0 +1,16 @@
+course_name = "测试课程"
+repo_type = "normal"
+course_code = "TEST0000"
+
+description = """
+这是一个用于验证 GitHub Actions 自动格式化+生成 README 的测试仓库。
+"""
+
+[[lecturers]]
+name = "测试教师"
+
+  [[lecturers.reviews]]
+  content = """
+  这是一条测试评价。
+  """
+  author = { name = "LiPu", link = "https://github.com/LiPu-jpg", date = "2026-02" }
