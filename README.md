@@ -1,8 +1,10 @@
-<!-- RDME_TOML_AUTOGEN_WARNING_START -->
-> [!WARNING]
-> TOML 自动化格式化/生成 README 失败：请检查 readme.toml（并查看 Actions 日志）。
-<!-- RDME_TOML_AUTOGEN_WARNING_END -->
+# TEST0000 - 测试课程
 
-# Test Repo
+这是一个用于验证 GitHub Actions 自动格式化+生成 README 的测试仓库。
 
-This README will be regenerated from readme.toml by GitHub Actions.
+## 授课教师
+
+- 测试教师
+  - 这是一条测试评价。
+
+  > 文 / [LiPu](https://github.com/LiPu-jpg), 2026-02
