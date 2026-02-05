@@ -70,8 +70,7 @@ jobs:
         continue-on-error: true
         run: |
           set -euo pipefail
-          curl -sSLf -o /tmp/convert_toml_to_readme.py "${{ inputs.generator_url }}"
-          python3 /tmp/convert_toml_to_readme.py --input "${{ inputs.toml_path }}" --overwrite
+          python3 scripts/convert_toml_to_readme.py --input "${{ inputs.toml_path }}" --overwrite
 
       - name: Clear warning (success only)
         if: >-
