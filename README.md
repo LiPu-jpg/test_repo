@@ -1,3 +1,8 @@
+<!-- RDME_TOML_AUTOGEN_WARNING_START -->
+> [!WARNING]
+> TOML 自动化格式化/生成 README 失败：请检查 readme.toml（并查看 Actions 日志）。
+<!-- RDME_TOML_AUTOGEN_WARNING_END -->
+
 # CrossSpecialty - 跨专业选修课程体系
 
 自 23 级起，跨专业发展课程学分从创新学分 14 分中独立出来，成为单独的 10 学分的跨专业课程学分要求。
