@@ -45,7 +45,7 @@ jobs:
       - name: Set up Taplo CLI
         uses: uncenter/setup-taplo@v1
         with:
-          version: "0.10.0"
+          version: "1.0.8"
 
       - name: Format TOML (taplo fmt)
         id: fmt
